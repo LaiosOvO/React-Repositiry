@@ -8,8 +8,8 @@ function StateDemo(){
     return (
         <>
             <h6>useState() hook demo</h6>
-            <TodoDemo></TodoDemo>
-
+            {/*<TodoDemo></TodoDemo>*/}
+            <FunctionAsState></FunctionAsState>
 
 
         </>
@@ -98,6 +98,30 @@ function TodoDemo(){
 
 }
 
+
+// !!! 没过
+function FunctionAsState() {
+    var [fn, setFn] = useState(() => defaultAction);
+
+    var actionA = () => { console.log("-action a-"); }
+    var actionB = () => { console.log("-action b-"); }
+    var defaultAction = () => { console.log("-default action-"); }
+
+    function invoke1() {
+        console.log("good");
+        fn();
+    }
+
+    return (
+        <>
+            <div>
+                <button onClick={() => invoke1()}>click to invoke function</button>
+                <button onClick={() => { setFn(actionA); invoke1(); }}>change to actionA</button>
+                <button onClick={() => { setFn(actionB); invoke1(); }}>change to actionB</button>
+            </div>
+        </>
+    )
+}
 
 
 export default StateDemo
