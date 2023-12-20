@@ -1,0 +1,8 @@
+//  "scripts": {
+//    "dev": "env-cmd --verbose -e dev vite",
+//    "dev:mock": "env-cmd --verbose -e dev_mock vite",
+//    "dev:color": "env-cmd --verbose -e dev_color vite",
+//    "build": "env-cmd --verbose -e build vite build",
+//    "build:color": "env-cmd --verbose -e build_color vite build",
+//    "preview": "vite preview"
+//  },
