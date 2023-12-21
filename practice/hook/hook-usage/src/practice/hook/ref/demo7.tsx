@@ -1,6 +1,6 @@
 import {useEffect, useRef} from "react";
 
-function WindowSize(){
+function WindowSize() : React.ReactElement{
     const widthRef = useRef(window.innerWidth);
 
     useEffect( ()=>{
@@ -12,7 +12,6 @@ function WindowSize(){
         }
 
         window.addEventListener( "resize" , handleResize )
-
 
         return ()=>window.removeEventListener( "resize" , handleResize );
     },[] )

@@ -2,6 +2,9 @@ import {Row,Col} from 'antd'
 import RefDemo1 from "./RefDemo1";
 import RefDemo2 from "./RefDemo2";
 
+import Demo6 from './demo6'
+import Demo7 from './demo7'
+
 const Main:React.FC = ()=>{
 
     return (
@@ -14,6 +17,14 @@ const Main:React.FC = ()=>{
 
             <Row>
                 <RefDemo2 />
+            </Row>
+
+            <Row>
+                <Demo6 />
+            </Row>
+
+            <Row>
+                <Demo7 />
             </Row>
         </div>
     )

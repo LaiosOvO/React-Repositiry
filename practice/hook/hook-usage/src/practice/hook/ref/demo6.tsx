@@ -36,7 +36,7 @@ const MovingBox: React.FC = () =>{
     } , [] )
 
     return (
-        <div ref={boxRef}></div>
+        <div ref={boxRef} style={{width:200,height:200,backgroundColor:"white"}}></div>
     )
 }
 
