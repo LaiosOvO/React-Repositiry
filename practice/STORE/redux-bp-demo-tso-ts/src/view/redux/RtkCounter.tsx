@@ -29,8 +29,13 @@ const RtkCounter:React.FC = ()=>{
 
                 <ul>
                     {list.map( (ite)=><li key={ite.tvId}>{ite.name}</li> )}
-
                 </ul>
+            </div>
+
+
+            <div>
+                <p>test axios configuration</p>
+                <button> axios1 </button>
             </div>
         </div>
 

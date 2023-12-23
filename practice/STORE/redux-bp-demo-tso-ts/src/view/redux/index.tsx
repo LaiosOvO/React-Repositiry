@@ -1,10 +1,11 @@
-import RtkCounter from "./RtkCounter";
-
+// import RtkCounter from "./RtkCounter";
+import AxiosDemo from './AxiosDemo'
 export const Main:React.FC = ()=>{
 
     return (
         <div>
-            <RtkCounter />
+            {/* <RtkCounter /> */}
+            <AxiosDemo />
         </div>
     )
 
