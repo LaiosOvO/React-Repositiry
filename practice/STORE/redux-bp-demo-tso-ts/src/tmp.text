@@ -1,0 +1,34 @@
+/*
+别的项目的通用下载方法
+// eslint-disable-next-line default-param-last
+export async function download(url: string, fileName = 'excel', fileFormat = 'xlsx', params?: object) {
+    try {
+        const res = await instance.post(url, params, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            responseType: 'blob',
+        });
+        const uploadExcel = (fileName_2: any) => {
+            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }) as any;
+            const url_3 = URL.createObjectURL(blob);
+            const aLink = document.createElement('a');
+            aLink.setAttribute('download', fileName_2);
+            aLink.setAttribute('href', url_3);
+            document.body.appendChild(aLink);
+            aLink.click();
+            document.body.removeChild(aLink);
+            URL.revokeObjectURL(blob);
+        };
+        uploadExcel(`${fileName}_${new Date().valueOf()}.${fileFormat}`);
+    } catch (r: any) {
+        NProgress.done();
+        const resText = await r.response.data.text();
+        const rspObj = JSON.parse(resText);
+        if (rspObj.code === '500') {
+            return message.error(`${rspObj.code}: ${rspObj.message}`);
+        }
+        console.error(r);
+        message.error('下载文件出现错误，请联系管理员！');
+    }
+}
+
+* */

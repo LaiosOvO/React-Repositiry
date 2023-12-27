@@ -1,7 +1,7 @@
-import axios, {AxiosError, AxiosResponse} from 'axios';
+import axios, {AxiosError, AxiosResponse, InternalAxiosRequestConfig} from 'axios';
 import { message, notification } from "antd";
 import {getToken} from '../utils/index'
-
+import CryptoJS from 'crypto-js';
 
 
 // 配置基础属性
@@ -35,8 +35,21 @@ const codeMessage: { [key: number]: string } = {
     503: "服务不可用，服务器暂时过载或维护。",
     504: "网关超时。",
 };
+// 加密函数
+function encrypt(data:object|string|number) {
+    const secretKey = 'laios'; // 密钥，长度为16、24或32位
+    const ciphertext = CryptoJS.AES.encrypt(JSON.stringify(data), secretKey).toString();
+    return ciphertext;
+}
 
 const service = axios.create( config );
+
+
+export interface Response<T> {
+    code: number;
+    data:T;
+    msg:string;
+}
 
 // 请求拦截器
 // 实现增强部分 =
@@ -45,11 +58,28 @@ const service = axios.create( config );
 * 2 设置header参数 - token
 * */
 service.interceptors.request.use(
-    function(config ){
+    function(config:InternalAxiosRequestConfig ){
 
         const token = getToken()
         config.headers["authorization"] = token
         // 进度条组件 NProgress.start();
+
+        // 接口参数加密
+        try{
+            let encryFlag:boolean = false;
+            if(config.method == 'post'){
+                encryFlag = config.data.encryFlag;
+            }else if (config.method == 'get'){
+                encryFlag = config.params.encryFlag;
+            }
+
+            if(encryFlag){
+                config.data = { data: encrypt(JSON.stringify(config.data)) }
+            }
+        }catch (error ) {
+            console.log()
+        }
+
         return config;
     },
     function (error) {
@@ -67,9 +97,8 @@ service.interceptors.response.use(
     function (response:AxiosResponse) {
         // 对响应的状态码进行统一拦截请求
         // 可以使用 进度条组件 NProgress.done();
-        const  { data,status } = response
-        console.log(data)
-        console.log(status)
+//        const  { data,status } = response
+
 
 
         message.success("请求成功")
@@ -106,46 +135,5 @@ service.interceptors.response.use(
     }
 
 )
-
-
-
-
-/*
-别的项目的通用下载方法
-// eslint-disable-next-line default-param-last
-export async function download(url: string, fileName = 'excel', fileFormat = 'xlsx', params?: object) {
-    try {
-        const res = await instance.post(url, params, {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            responseType: 'blob',
-        });
-        const uploadExcel = (fileName_2: any) => {
-            const blob = new Blob([res.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8' }) as any;
-            const url_3 = URL.createObjectURL(blob);
-            const aLink = document.createElement('a');
-            aLink.setAttribute('download', fileName_2);
-            aLink.setAttribute('href', url_3);
-            document.body.appendChild(aLink);
-            aLink.click();
-            document.body.removeChild(aLink);
-            URL.revokeObjectURL(blob);
-        };
-        uploadExcel(`${fileName}_${new Date().valueOf()}.${fileFormat}`);
-    } catch (r: any) {
-        NProgress.done();
-        const resText = await r.response.data.text();
-        const rspObj = JSON.parse(resText);
-        if (rspObj.code === '500') {
-            return message.error(`${rspObj.code}: ${rspObj.message}`);
-        }
-        console.error(r);
-        message.error('下载文件出现错误，请联系管理员！');
-    }
-}
-
-* */
-
-
-
 
 export default service;
